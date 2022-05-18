@@ -48,9 +48,10 @@ class preparacion_dataset:
         #print(self.df['class'].value_counts())
 
     def pandas2array(self):
-        self.feature_df = self.df[self.df.columns[1:len(self.df.columns)-1]]
+        self.feature_df = self.df[self.df.columns[1:len(self.df.columns)-3]]
         self.X_readed = np.asarray(self.feature_df)
         self.y_readed = np.asarray(self.df[self.df.columns[len(self.df.columns)-1]])
+        print(self.feature_df.head())
        
     
     def oversampling(self, balanceo=True):
