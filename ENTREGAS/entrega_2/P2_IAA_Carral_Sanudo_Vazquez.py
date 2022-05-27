@@ -12,13 +12,12 @@ from sklearn import preprocessing
 from sklearn.decomposition import PCA
 
 from imblearn.over_sampling import SMOTE
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import ShuffleSplit, KFold, cross_validate 
 from sklearn.neural_network import MLPRegressor
 from sklearn.metrics import make_scorer, r2_score, mean_squared_error
 
 GENERAL_PATH = "C:/Users/pablo/Desktop/ENTREGAS/entrega_2/"
-CSV_PATH = GENERAL_PATH + "hour.csv" #todos_accelerometer_data_pids_13.csv
+CSV_PATH = GENERAL_PATH + "hour.csv"
 GRAPH_PATH = GENERAL_PATH + "/graficas"
 
 class preparacion_dataset:
@@ -27,8 +26,9 @@ class preparacion_dataset:
     def lectura_datos(self):
         self.df=pd.read_csv(CSV_PATH, sep=',', na_values=["?"])
         #self.df['dteday'] = self.df['dteday'].astype(int)
-        #self.df['dteday'] = pd.to_numeric(self.df['dteday'])
-        self.df["dteday"] = pd.to_datetime(self.df["dteday"],format="%y-%m-%d",infer_datetime_format=True)
+        #self.df['dteday'] = pd.to_numeric(self.df['dteday']
+        self.df["dteday"] = pd.to_datetime(self.df["dteday"],format="%Y-%m-%d", yearfirst= True)
+        #self.df["dteday"] = self.df["dteday"].apply(str)
         #self.df['dteday'] = self.df['dteday'].astype(int)
         self.df['dteday'] = pd.to_numeric(self.df['dteday'])
         #self.df["dteday"] = int(self.df.strftime("%Y%m%d"))
@@ -131,22 +131,15 @@ def plot_boxplot(model_list, figure_size = (10,5)):
 
 def show_cv_results(results):
     print()
-    print("                     Splits    Train r2   Test r2   Train MSE   Test MSE Train time ")
-    print("------------------------------------------------------------------------------------")    
+    print("Modelos           Test r2 mean   Test r2 desv   Test MSE mean   Test MSE desv")
+    print("------------------------------------------------------------------------------------")
     for title, res in results:
-        estimators = res['estimator']  
         fit_time = res['fit_time']
-        train_r2 = res['train_r2']
         test_r2 = res['test_r2']
-        train_mse = res['train_mse']
-        test_mse = res['test_mse']   
-        
-        for i in range(len(estimators)):
-            print(f"{title:23} {i+1:2} {train_r2[i]:10.2f} {test_r2[i]:10.2f} {train_mse[i]:10.2f} {test_mse[i]:10.2f} {fit_time[i]:10.2f}")            
-        print()  
-        print(f"Test r2 medio: {test_r2.mean():.3f} (+/- {(test_r2.std()):.2f})", end="  -  ")
-        print(f"Test mse medio: {test_mse.mean():.3f} (+/- {(test_mse.std()):.2f})")        
-        print() 
+        test_mse = res['test_mse']
+
+    print(f"{title:23}   {test_r2.mean():.3f}    (+/- {(test_r2.std()):.2f})   {test_mse.mean():.3f}   (+/- {(test_mse.std()):.2f})")
+    print()
 
 def copy_and_sort(element_list):
     sorted_list = element_list[:]
@@ -172,36 +165,36 @@ def plot_expected_vs_predicted(expected_list, predicted_list, num_figures, cols=
     plt.subplots_adjust(right=sp_right, top=sp_top)
     plt.show()
 
-def modelo_red_neuronal(activation_function = 'relu', tolerance = 1e-4, iterations = 10000, batch_size_1 = 32, batch_size_2 = 128, train = True ):
+def modelo_red_neuronal(activation_function = 'relu', tolerance = 1e-4, iterations = 4000, batch_size_1 = 32, batch_size_2 = 128, train = True ):
     
     print('\nEntrenando todas las arquitectura de red neuronal...\n')
     random_seed = 0
     layers = ()
 
-    models = (('MLP(4,) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(100,100), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True, n_iter_no_change=40)),
-           ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(4,4,4,), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(8,8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)))
+    models = (('MLP(4,4) batch:'+str(batch_size_1)+'tolerance:'+str(tolerance)+'function:'+str(activation_function)+'iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True, n_iter_no_change=10)),
+           ('MLP(4,4) batch:'+str(batch_size_2)+'tolerance:'+str(tolerance)+'function:'+str(activation_function)+'iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)))
+            #('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            #('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+           # ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            #('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            #('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            #('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(4,4,4,), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            #('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+           # ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(8,8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+           # ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+           # ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+           # ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+           # ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            #('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+           # ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+           # ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+           # ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)))
             
     score_dict = {'r2': 'r2',
                 'mse': make_scorer(mean_squared_error)}
 
     results = []
-    kf10 = KFold(n_splits=10, shuffle=True, random_state=0) 
+    kf10 = KFold(n_splits=2, shuffle=True, random_state=0)
 
     if train:
         for (title,model) in models:
@@ -225,7 +218,7 @@ def mejor_modelo(X,y, result, kf5):
     # Gráfica que representa los valores obtenidos con la predicción frente a los esperados con el mejor resultado
     predicted = []
     expected = []
-    model=0
+    model= 0
     for title,result in results:
         estimators = result['estimator']
         i = max_score_list[model][1]
@@ -237,6 +230,19 @@ def mejor_modelo(X,y, result, kf5):
     num_graficas = len(predicted)
     plot_expected_vs_predicted(expected, predicted, num_graficas, cols=2, sp_right=1, sp_top=2, fig_size=(20,10))
 
+def probador_hiperparametros():
+    batch_size = [16, 64]
+    iterations = [1000, 4000]
+    activation_function = ['relu']
+    tol = [1e-1]
+    for bs in batch_size:
+        for it in iterations:
+            for af in activation_function:
+                for tole in tol:
+                    #print(bs, it, af, tole)
+                    results, kf10 = modelo_red_neuronal(batch_size_2 = bs, iterations= it, activation_function= af, tolerance= tole)
+
+    return results, kf10
 
 if __name__ == "__main__":
 
@@ -263,11 +269,20 @@ if __name__ == "__main__":
     y = dataset.y
     
     #Algoritmos de entrenamiento
-    results, kf10 = modelo_red_neuronal()
+
+    results, kf10 = probador_hiperparametros()
+    ''''
+    #valores definitivos hiperparametro
+    bs =
+    it = 
+    af =
+    tole = 
+    results, kf10 = modelo_red_neuronal(batch_size_2=bs, iterations=it, activation_function=af, tolerance=tole)
+    '''
 
     #Evaluación de resultados
     plot_boxplot(results)
     show_cv_results(results)
     mejor_modelo(X,y, results, kf10)
-    
+
     
