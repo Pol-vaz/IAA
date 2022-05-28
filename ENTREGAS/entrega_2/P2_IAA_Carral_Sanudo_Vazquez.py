@@ -131,13 +131,13 @@ def plot_boxplot(model_list, figure_size = (10,5)):
 
 def show_cv_results(results):
     print()
-    print("                                 Modelos           Test r2 mean   Test r2 desv   Test MSE mean   Test MSE desv")
+    print("                                 Modelos                           Test r2 mean   Test r2 desv   Test MSE mean   Test MSE desv")
     print("------------------------------------------------------------------------------------")
     for title, res in results:
         fit_time = res['fit_time']
         test_r2 = res['test_r2']
         test_mse = res['test_mse']
-        print(f"{title:23}   {test_r2.mean():.3f}    (+/- {(test_r2.std()):.2f})   {test_mse.mean():.3f}   (+/- {(test_mse.std()):.2f})")
+        print(f"{title:23}         {test_r2.mean():.3f}         (+/- {(test_r2.std()):.2f})         {test_mse.mean():.3f}        (+/- {(test_mse.std()):.2f})")
         print()
 
 def copy_and_sort(element_list):
@@ -170,24 +170,24 @@ def modelo_red_neuronal(activation_function = 'relu', tolerance = 1e-4, iteratio
     random_seed = 0
     layers = ()
 
-    models = (('MLP(4,4 v1) batch:'+str(batch_size_1) + ' tolerance:'+str(tolerance) + ' function:'+str(activation_function)+ ' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-           ('MLP(4,4 v2) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)))
-            #('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-           # ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            #('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            #('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            #('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(4,4,4,), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            #('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-           # ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(8,8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-           # ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-           # ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-           # ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-           # ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            #('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-           # ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-           # ('MLP(8,8) batch:'+str(batch_size_1),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-           # ('MLP(8,8) batch:'+str(batch_size_2),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)))
+    models = (('MLP(4,4) batch:'+str(batch_size_1) + ' tolerance:'+str(tolerance) + ' function:'+str(activation_function)+ ' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(4,4) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(8,8) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(8,8) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(16,16) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(16,16) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(4,4,4) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(4,4,4) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4,), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(8,8,8) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(8,8,8) batch:' + str(batch_size_1) +' tolerance:'+ str(tolerance) + ' function:' + str(activation_function)+' iterations:'+ str(iterations),MLPRegressor(hidden_layer_sizes=(8, 8, 8), batch_size=batch_size_1, activation=activation_function,tol=tolerance, max_iter=iterations, random_state=random_seed, verbose=True)),
+            ('MLP(16,16,16) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(16,16,16) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(4,4,4,4) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(4,4,4,4) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(8,8,8,8) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(8,8,8,8) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(16,16,16,16) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+            ('MLP(16,16,16,16) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)))
             
     score_dict = {'r2': 'r2',
                 'mse': make_scorer(mean_squared_error)}
@@ -204,7 +204,7 @@ def modelo_red_neuronal(activation_function = 'relu', tolerance = 1e-4, iteratio
         return results, kf10
     
 
-def mejor_modelo(X,y, result, kf5):
+def mejor_modelo(X,y, results, kf5):
     max_score_list = []
     for title,res in results:
         test_score = res['test_r2']
@@ -246,10 +246,10 @@ def probador_hiperparametros():
                     resultados.append(results)
                     kf10s.append(kf10)
     # Evaluación de resultados
-    for results, kf10 in zip(resultados, kf10):
-        plot_boxplot(results)
+    for results, kf10 in zip(resultados, kf10s):
+        #plot_boxplot(results)
         show_cv_results(results)
-        mejor_modelo(X,y, results, kf10)
+        #mejor_modelo(X,y, results, kf10)
 
 
 if __name__ == "__main__":
