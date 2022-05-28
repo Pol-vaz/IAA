@@ -48,10 +48,10 @@ class preparacion_dataset:
         #print(self.df['class'].value_counts())
 
     def pandas2array(self):
-        self.feature_df = self.df[self.df.columns[1:len(self.df.columns)-1]]
+        self.feature_df = self.df[self.df.columns[1:len(self.df.columns)-3]]
         self.X_readed = np.asarray(self.feature_df)
         self.y_readed = np.asarray(self.df[self.df.columns[len(self.df.columns)-1]])
-       
+
     
     def oversampling(self, balanceo=True):
         print ('Conjunto original', self.X_readed.shape,  self.y_readed.shape)
@@ -172,22 +172,22 @@ def modelo_red_neuronal(activation_function = 'relu', tolerance = 1e-4, iteratio
 
     models = (('MLP(4,4) batch:'+str(batch_size_1) + ' tolerance:'+str(tolerance) + ' function:'+str(activation_function)+ ' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
             ('MLP(4,4) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(16,16) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(16,16) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(4,4,4) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(4,4,4) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4,), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8,8) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8,8) batch:' + str(batch_size_1) +' tolerance:'+ str(tolerance) + ' function:' + str(activation_function)+' iterations:'+ str(iterations),MLPRegressor(hidden_layer_sizes=(8, 8, 8), batch_size=batch_size_1, activation=activation_function,tol=tolerance, max_iter=iterations, random_state=random_seed, verbose=True)),
-            ('MLP(16,16,16) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(16,16,16) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(4,4,4,4) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(4,4,4,4) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8,8,8) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(8,8,8,8) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(16,16,16,16) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
-            ('MLP(16,16,16,16) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)))
+            ('MLP(8,8) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)))
+           #('MLP(8,8) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(16,16) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(16,16) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(4,4,4) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(4,4,4) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4,), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(8,8,8) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(8,8,8) batch:' + str(batch_size_1) +' tolerance:'+ str(tolerance) + ' function:' + str(activation_function)+' iterations:'+ str(iterations),MLPRegressor(hidden_layer_sizes=(8, 8, 8), batch_size=batch_size_1, activation=activation_function,tol=tolerance, max_iter=iterations, random_state=random_seed, verbose=True)),
+          # ('MLP(16,16,16) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(16,16,16) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(4,4,4,4) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(4,4,4,4) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(4,4,4,4), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(8,8,8,8) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_1, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(8,8,8,8) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(8,8,8,8), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+         #  ('MLP(16,16,16,16) batch:'+str(batch_size_1) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)),
+          # ('MLP(16,16,16,16) batch:'+str(batch_size_2) +' tolerance:'+str(tolerance) +' function:' +str(activation_function)+' iterations:'+str(iterations),MLPRegressor(hidden_layer_sizes=(16,16,16,16), batch_size=batch_size_2, activation = activation_function, tol=tolerance, max_iter=iterations, random_state=random_seed, verbose= True)))
             
     score_dict = {'r2': 'r2',
                 'mse': make_scorer(mean_squared_error)}
@@ -235,7 +235,7 @@ def probador_hiperparametros():
     batch_size = [16,64]
     iterations = [1000,4000]
     activation_function = ['relu']
-    tol = [1e-3, 1e-4]
+    tol = [1e-0, 1e-1]
     resultados = []
     kf10s = []
     for bs in batch_size:
@@ -249,7 +249,7 @@ def probador_hiperparametros():
     for results, kf10 in zip(resultados, kf10s):
         #plot_boxplot(results)
         show_cv_results(results)
-        #mejor_modelo(X,y, results, kf10)
+        mejor_modelo(X,y, results, kf10)
 
 
 if __name__ == "__main__":
@@ -279,7 +279,7 @@ if __name__ == "__main__":
     #Algoritmos de entrenamiento
 
     resultados, kf10s = probador_hiperparametros()
-
+    
     '''
     #valores definitivos hiperparametro
     bs = 16
@@ -293,5 +293,6 @@ if __name__ == "__main__":
     show_cv_results(results)
     mejor_modelo(X,y, results, kf10)
     '''
+
 
     
